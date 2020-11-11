@@ -2,6 +2,8 @@ Este repositorio contiene un API para desarrollar un servicio que se encargue de
 
 ## Historias de usuario
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bbdd51556ecb4eba80e4a89069c09881)](https://app.codacy.com/gh/arobld00/shared-costs?utm_source=github.com&utm_medium=referral&utm_content=arobld00/shared-costs&utm_campaign=Badge_Grade)
+
 * Como usuario, quiero acceder al grupo de gastos compartidos de mi grupo de amigos. Para cada gasto quiero visualizar la siguiente información:
     * Persona que realizó el pago
     * Importe del pago
