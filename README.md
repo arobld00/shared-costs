@@ -1,3 +1,7 @@
+### Estado del código  
+[![Build Status](https://travis-ci.com/arobld00/shared-costs.svg?branch=master)](https://travis-ci.com/github/arobld00/shared-costs)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/88e09f8010a84c16b58802bc8180d0ba)](https://www.codacy.com/gh/arobld00/shared-costs/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=arobld00/shared-costs&amp;utm_campaign=Badge_Grade)
+
 Este repositorio contiene un API para desarrollar un servicio que se encargue de gestionar los gastos compartidos de mi grupo de amigos.
 
 ## Historias de usuario
