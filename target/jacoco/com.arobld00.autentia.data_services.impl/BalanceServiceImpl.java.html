@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BalanceServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">autentia</a> &gt; <a href="index.source.html" class="el_package">com.arobld00.autentia.data_services.impl</a> &gt; <span class="el_source">BalanceServiceImpl.java</span></div><h1>BalanceServiceImpl.java</h1><pre class="source lang-java linenums">package com.arobld00.autentia.data_services.impl;
+
+import com.arobld00.autentia.data_services.BalanceService;
+import com.arobld00.autentia.domain.Balance;
+import com.arobld00.autentia.domain.Debt;
+import com.arobld00.autentia.domain.exceptions.BalanceCalculationException;
+import com.arobld00.autentia.rest.dtos.BalanceInputDto;
+import com.arobld00.autentia.rest.dtos.DebtOutputDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service(&quot;balanceService&quot;)
+<span class="nc" id="L17">public class BalanceServiceImpl implements BalanceService {</span>
+
+    public List&lt;DebtOutputDto&gt; calculateDebt(BalanceInputDto balanceDto) {
+<span class="nc" id="L20">        List&lt;DebtOutputDto&gt; debtList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L21">        Balance balance = new Balance();</span>
+
+        try {
+<span class="nc" id="L24">            balance.calculateFlowDebt(balanceDto.getFlow());</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">            for (Debt debt : balance.getDebtList()) {</span>
+<span class="nc" id="L26">                debtList.add(new DebtOutputDto(debt));</span>
+<span class="nc" id="L27">            }</span>
+<span class="nc" id="L28">        } catch (BalanceCalculationException e) {</span>
+<span class="nc" id="L29">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Balance calculation&quot; , e);</span>
+<span class="nc" id="L30">        }</span>
+
+<span class="nc" id="L32">        return debtList;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentPersistenceMongodb.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">autentia</a> &gt; <a href="index.source.html" class="el_package">com.arobld00.autentia.repositories.mongodb</a> &gt; <span class="el_source">PaymentPersistenceMongodb.java</span></div><h1>PaymentPersistenceMongodb.java</h1><pre class="source lang-java linenums">package com.arobld00.autentia.repositories.mongodb;
+
+import com.arobld00.autentia.domain.Payment;
+import com.arobld00.autentia.domain.exceptions.NotFoundException;
+import com.arobld00.autentia.repositories.PaymentPersistence;
+import com.arobld00.autentia.rest.dtos.PaymentDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Repository(&quot;payPersistence&quot;)
+public class PaymentPersistenceMongodb implements PaymentPersistence {
+
+    private PaymentRepository paymentRepository;
+
+    private FriendRepository friendRepository;
+
+    @Autowired
+    public PaymentPersistenceMongodb(PaymentRepository paymentRepository,
+<span class="nc" id="L22">                                     FriendRepository friendRepository) {</span>
+<span class="nc" id="L23">        this.paymentRepository = paymentRepository;</span>
+<span class="nc" id="L24">        this.friendRepository = friendRepository;</span>
+<span class="nc" id="L25">    }</span>
+
+    @Override
+    public List&lt;Payment&gt; readAll() {
+<span class="nc" id="L29">        return this.paymentRepository</span>
+<span class="nc" id="L30">                .findAll().stream()</span>
+<span class="nc" id="L31">                .map(PaymentEntity::toPay)</span>
+<span class="nc" id="L32">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public Payment create(Payment in) {
+<span class="nc" id="L37">        FriendEntity provider = null;</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (in.getProvider() != null) {</span>
+<span class="nc" id="L39">            provider = this.friendRepository.findByName(in.getProvider()).orElseThrow(</span>
+<span class="nc" id="L40">                    () -&gt; new NotFoundException(&quot;Friend (&quot; + in.getProvider() + &quot;)&quot;)</span>
+            );
+        }
+
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        String concept = (in.getConcept() == null) ? &quot;Pago&quot; : in.getConcept();</span>
+<span class="nc" id="L45">        PaymentEntity payment = PaymentEntity.builder().amount(in.getAmount()).provider(provider).</span>
+<span class="nc" id="L46">                concept(concept).build();</span>
+<span class="nc" id="L47">        return this.paymentRepository.save(payment).toPay();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

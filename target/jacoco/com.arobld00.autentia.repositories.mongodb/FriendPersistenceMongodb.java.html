@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FriendPersistenceMongodb.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">autentia</a> &gt; <a href="index.source.html" class="el_package">com.arobld00.autentia.repositories.mongodb</a> &gt; <span class="el_source">FriendPersistenceMongodb.java</span></div><h1>FriendPersistenceMongodb.java</h1><pre class="source lang-java linenums">package com.arobld00.autentia.repositories.mongodb;
+
+import com.arobld00.autentia.rest.dtos.FriendDto;
+import com.arobld00.autentia.domain.exceptions.PhoneAlreadyExistException;
+import com.arobld00.autentia.domain.exceptions.NotFoundException;
+import com.arobld00.autentia.domain.Friend;
+import com.arobld00.autentia.repositories.FriendPersistence;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Repository(&quot;friendPersistence&quot;)
+public class FriendPersistenceMongodb implements FriendPersistence {
+
+    private FriendRepository friendRepository;
+
+    @Autowired
+<span class="nc" id="L20">    public FriendPersistenceMongodb(FriendRepository friendRepository) {</span>
+<span class="nc" id="L21">        this.friendRepository = friendRepository;</span>
+<span class="nc" id="L22">    }</span>
+
+    @Override
+    public List&lt;Friend&gt; readAll() {
+<span class="nc" id="L26">        return this.friendRepository</span>
+<span class="nc" id="L27">                .findAll().stream()</span>
+<span class="nc" id="L28">                .map(FriendEntity::toFriend)</span>
+<span class="nc" id="L29">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public Friend create(Friend friend) {
+<span class="nc" id="L34">        this.assertPhoneExist(friend.getPhone());</span>
+<span class="nc" id="L35">        return this.friendRepository</span>
+<span class="nc" id="L36">                .save(new FriendEntity(friend))</span>
+<span class="nc" id="L37">                .toFriend();</span>
+    }
+
+    @Override
+    public void assertPhoneExist(String phone) {
+<span class="nc" id="L42">        this.friendRepository</span>
+<span class="nc" id="L43">                .findByPhone(phone)</span>
+<span class="nc" id="L44">                .ifPresent(friend -&gt; {</span>
+<span class="nc" id="L45">                    throw new PhoneAlreadyExistException(&quot;Phone exist: &quot; + phone);</span>
+                });
+<span class="nc" id="L47">    }</span>
+
+    @Override
+    public Friend readByPhone(String phone) {
+<span class="nc" id="L51">        return this.friendRepository</span>
+<span class="nc" id="L52">                .findByPhone(phone)</span>
+<span class="nc" id="L53">                .orElseThrow(() -&gt; new NotFoundException(&quot;Friend phone: &quot; + phone))</span>
+<span class="nc" id="L54">                .toFriend();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

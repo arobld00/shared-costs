@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BalanceResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">autentia</a> &gt; <a href="index.source.html" class="el_package">com.arobld00.autentia.rest</a> &gt; <span class="el_source">BalanceResource.java</span></div><h1>BalanceResource.java</h1><pre class="source lang-java linenums">package com.arobld00.autentia.rest;
+
+import com.arobld00.autentia.data_services.BalanceService;
+import com.arobld00.autentia.rest.dtos.BalanceInputDto;
+import com.arobld00.autentia.rest.dtos.DebtOutputDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+//@PreAuthorize(&quot;hasRole('USER')&quot;)
+@RestController
+@RequestMapping(BalanceResource.BALANCE)
+public class BalanceResource {
+
+    public static final String BALANCE = &quot;/balance&quot;;
+
+    private BalanceService balanceService;
+
+    @Autowired
+<span class="nc" id="L21">    public BalanceResource(BalanceService balanceService) {</span>
+<span class="nc" id="L22">        this.balanceService = balanceService;</span>
+<span class="nc" id="L23">    }</span>
+
+    /* JSON:
+        { &quot;flow&quot;: {&quot;Francisco Buyo&quot;:&quot;59.15&quot;,&quot;Alfonso Pérez&quot;:&quot;22.55&quot;,&quot;Raúl González&quot;:&quot;-40.85&quot;,&quot;José María Gutiérrez&quot;:&quot;-40.85&quot;} }
+     */
+    @PostMapping
+    public List&lt;DebtOutputDto&gt; calculateDebt(@RequestBody BalanceInputDto balanceDto) {
+<span class="nc" id="L30">        return this.balanceService.calculateDebt(balanceDto);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
